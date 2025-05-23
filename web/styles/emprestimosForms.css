@@ -1,0 +1,132 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #e0f7fa, #ffffff);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+  color: #333;
+}
+
+.container {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  width: 100%;
+  max-width: 600px;
+  animation: fadeInUp 0.6s ease forwards;
+  box-sizing: border-box;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #4a4a4a;
+  text-align: center;
+}
+
+.flash-message {
+  background-color: #e6ffed;
+  border: 1.5px solid #4BB543;
+  color: #2e7d32;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  animation: fadeIn 1s ease;
+  gap: 8px;
+}
+
+.form-emprestimo {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-emprestimo label {
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 4px;
+}
+
+.form-emprestimo select,
+.form-emprestimo input[type="date"] {
+  padding: 10px 14px;
+  border: 1.8px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-emprestimo select:focus,
+.form-emprestimo input[type="date"]:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 6px rgba(102, 126, 234, 0.5);
+}
+
+.form-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary {
+  text-decoration: none;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #667eea;
+  color: white;
+  box-shadow: 0 4px 6px rgba(102, 126, 234, 0.35);
+}
+
+.btn-primary:hover {
+  background-color: #5661d2;
+}
+
+.btn-secondary {
+  background-color: #e0e0e0;
+  color: #333;
+  box-shadow: none;
+}
+
+.btn-secondary:hover {
+  background-color: #cacaca;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

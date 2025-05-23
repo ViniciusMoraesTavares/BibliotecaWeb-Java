@@ -1,0 +1,293 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #e0f7fa, #ffffff);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+}
+
+.card {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  max-width: 1000px;
+  width: 100%;
+  animation: fadeInUp 0.7s ease forwards;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #4a4a4a;
+}
+
+.page-title i {
+  margin-right: 10px;
+  color: #667eea;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.search-bar input[type="text"] {
+  padding: 8px;
+  width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-bar .btn-search {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-bar .btn-search i {
+  margin-right: 5px;
+}
+
+.search-bar .btn-search:hover {
+  background-color: #0056b3;
+}
+
+.btn-search, .btn-clear {
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+}
+
+.btn-search {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-clear {
+    background-color: #dc3545;
+    color: white;
+}
+
+.mensagem-sucesso {
+  background-color: #e6ffed;
+  border: 1.5px solid #4BB543;
+  color: #2e7d32;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: fadeIn 1s ease;
+}
+
+.actions {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.btn-primary, .btn-secondary {
+  text-decoration: none;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 4px 6px rgba(102, 126, 234, 0.35);
+  user-select: none;
+}
+
+.btn-primary {
+  background-color: #667eea;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #5661d2;
+}
+
+.btn-secondary {
+  background-color: #e0e0e0;
+  color: #333;
+  box-shadow: none;
+}
+
+.btn-secondary:hover {
+  background-color: #cacaca;
+}
+
+/* Tabela responsiva */
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 850px;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+thead tr {
+  background: #667eea;
+  color: white;
+  text-align: left;
+}
+
+th, td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+tbody tr:hover {
+  background-color: #f0f4ff;
+  transition: background-color 0.3s ease;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-edit, .btn-delete {
+  text-decoration: none;
+  font-size: 1.1rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.25s ease;
+}
+
+.btn-edit {
+  color: #fff;
+  background-color: #4caf50;
+  box-shadow: 0 3px 7px rgba(76, 175, 80, 0.5);
+}
+
+.btn-edit:hover {
+  background-color: #388e3c;
+}
+
+.btn-delete {
+  color: white;
+  background-color: #e53935;
+  box-shadow: 0 3px 7px rgba(229, 57, 53, 0.5);
+}
+
+.btn-delete:hover {
+  background-color: #b71c1c;
+}
+
+.no-data {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+  font-style: italic;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.formulario label {
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.formulario input[type="text"],
+.formulario input[type="date"],
+.formulario input[type="number"],
+.formulario input[type="email"],
+.formulario input[type="password"] {
+  padding: 10px 14px;
+  border: 1.8px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.formulario input[type="text"]:focus,
+.formulario input[type="date"]:focus,
+.formulario input[type="number"]:focus,
+.formulario input[type="email"]:focus,
+.formulario input[type="password"]:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 6px rgba(102, 126, 234, 0.5);
+}
+
+.form-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.mensagem-sucesso {
+  background-color: #e6ffed;
+  border: 1.5px solid #4BB543;
+  color: #2e7d32;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: fadeIn 1s ease;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #4a4a4a;
+}
+
+.page-title i {
+  margin-right: 10px;
+  color: #667eea;
+}
