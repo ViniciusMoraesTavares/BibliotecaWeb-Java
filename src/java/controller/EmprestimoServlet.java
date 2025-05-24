@@ -303,5 +303,5 @@ public class EmprestimoServlet extends BaseServlet {
         request.setAttribute("filtroDataFim", dataFimStr);
 
         encaminhar(request, response, "emprestimos/emprestimos-usuario.jsp");
-    }
+    }  
 }

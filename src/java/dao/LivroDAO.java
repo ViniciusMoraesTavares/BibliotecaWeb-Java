@@ -183,5 +183,17 @@ public class LivroDAO {
         }
         return lista;
     }
-
+    
+    public int contarEmprestimosAtivosPorLivro(int idLivro) throws SQLException, ClassNotFoundException {
+       String sql = "SELECT COUNT(*) FROM emprestimos WHERE id_livro = ? AND data_devolucao IS NULL";
+       try (Connection conn = ConnectionFactory.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+           stmt.setInt(1, idLivro);
+           ResultSet rs = stmt.executeQuery();
+           if (rs.next()) {
+               return rs.getInt(1);
+           }
+       }
+       return 0;
+   }
 }

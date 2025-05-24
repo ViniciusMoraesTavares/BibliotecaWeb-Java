@@ -47,13 +47,15 @@
             <th>Editora</th>
             <th>Ano</th>
             <th>ISBN</th>
-            <th>Disponível</th>
             <th>Categoria</th>
+            <th>Quantidade Total</th>
+            <th>Emprestados</th>
+            <th>Disponível</th>
             <th>Ações</th>
           </tr>
         </thead>
         <tbody>
-          <%
+        <%
             List<?> listaLivros = (List<?>) request.getAttribute("listaLivros");
             if (listaLivros != null) {
                 for (Object livro : listaLivros) {
@@ -65,6 +67,7 @@
                     Method mIsbn = livro.getClass().getMethod("getIsbn");
                     Method mQtd = livro.getClass().getMethod("getQuantidadeDisponivel");
                     Method mCategoria = livro.getClass().getMethod("getCategoria");
+                    Method mEmprestados = livro.getClass().getMethod("getQuantidadeEmprestada");
 
                     Object id = mId.invoke(livro);
                     Object titulo = mTitulo.invoke(livro);
@@ -74,16 +77,23 @@
                     Object isbn = mIsbn.invoke(livro);
                     Object quantidade = mQtd.invoke(livro);
                     Object categoria = mCategoria.invoke(livro);
+                    Object emprestados = mEmprestados.invoke(livro);
+
+                    int qtdTotal = (quantidade != null) ? ((Number)quantidade).intValue() : 0;
+                    int qtdEmprestada = (emprestados != null) ? ((Number)emprestados).intValue() : 0;
+                    int qtdDisponivel = qtdTotal - qtdEmprestada;
           %>
           <tr>
-            <td><%= id != null ? id : "" %></td>
-            <td><%= titulo != null ? titulo : "" %></td>
-            <td><%= autor != null ? autor : "" %></td>
-            <td><%= editora != null ? editora : "" %></td>
-            <td><%= ano != null ? ano : "" %></td>
-            <td><%= isbn != null ? isbn : "" %></td>
-            <td><%= quantidade != null ? quantidade : "" %></td>
-            <td><%= categoria != null ? categoria : "" %></td>
+            <td><%= id %></td>
+            <td><%= titulo %></td>
+            <td><%= autor %></td>
+            <td><%= editora %></td>
+            <td><%= ano %></td>
+            <td><%= isbn %></td>
+            <td><%= categoria %></td>
+            <td><%= qtdTotal %></td>
+            <td><%= qtdEmprestada %></td>
+            <td><%= qtdDisponivel %></td>
             <td class="actions-cell">
               <a href="livro?acao=editar&id=<%= id %>" class="btn-edit" title="Editar"><i class="fa fa-edit"></i></a>
               <a href="livro?acao=deletar&id=<%= id %>" class="btn-delete" title="Excluir" onclick="return confirm('Confirma exclusão?')"><i class="fa fa-trash"></i></a>
@@ -93,7 +103,7 @@
                 }
             } else {
           %>
-          <tr><td colspan="9" class="no-data">Nenhum livro encontrado.</td></tr>
+          <tr><td colspan="11" class="no-data">Nenhum livro encontrado.</td></tr>
           <% } %>
         </tbody>
       </table>

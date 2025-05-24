@@ -1,5 +1,6 @@
 package controller;
 
+import dao.EmprestimoDAO;
 import dao.LivroDAO;
 import modelo.Livro;
 
@@ -15,10 +16,12 @@ import java.util.List;
 public class LivroServlet extends BaseServlet {
 
     private LivroDAO livroDAO;
+    private EmprestimoDAO emprestimoDAO;
 
     @Override
     public void init() throws ServletException {
         livroDAO = new LivroDAO();
+        emprestimoDAO = new EmprestimoDAO();
     }
 
     @Override
@@ -32,7 +35,7 @@ public class LivroServlet extends BaseServlet {
                 case "novo" -> mostrarFormularioNovo(request, response);
                 case "editar" -> mostrarFormularioEdicao(request, response);
                 case "deletar" -> deletarLivro(request, response);
-                case "buscar" ->  buscarLivro(request, response);
+                case "buscar" -> buscarLivro(request, response);
                 default -> redirecionarComMensagem(request, response, "index.jsp", "Ação inválida.");
             }
         } catch (Exception e) {
@@ -59,15 +62,20 @@ public class LivroServlet extends BaseServlet {
     private void listarLivros(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         List<Livro> lista = livroDAO.listarTodos();
+
+        for (Livro livro : lista) {
+            int emprestados = emprestimoDAO.contarEmprestimosAtivosPorLivro(livro.getId());
+            livro.setQuantidadeEmprestada(emprestados);
+        }
+
         request.setAttribute("listaLivros", lista);
         encaminhar(request, response, "livros/livro-listar.jsp");
     }
-    
+
     private void mostrarFormularioNovo(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         encaminhar(request, response, "livros/livro-form.jsp");
     }
-
 
     private void inserirLivro(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
@@ -80,6 +88,15 @@ public class LivroServlet extends BaseServlet {
             throws Exception {
         Livro livro = criarLivroDoRequest(request);
         livro.setId(parseInt(request.getParameter("id")));
+
+        // Validação: não permitir quantidade menor que empréstimos ativos
+        int emprestados = emprestimoDAO.contarEmprestimosAtivosPorLivro(livro.getId());
+        if (livro.getQuantidadeDisponivel() < emprestados) {
+            redirecionarComMensagem(request, response, "livro?acao=editar&id=" + livro.getId(),
+                    "Erro: A quantidade não pode ser menor que os empréstimos ativos (" + emprestados + ").");
+            return;
+        }
+
         livroDAO.atualizar(livro);
         redirecionarComMensagem(request, response, "livro?acao=listar", "Livro atualizado com sucesso!");
     }
@@ -89,7 +106,8 @@ public class LivroServlet extends BaseServlet {
         int id = parseInt(request.getParameter("id"));
 
         if (livroDAO.possuiEmprestimos(id)) {
-            redirecionarComMensagem(request, response, "livro?acao=listar", "Não é possível deletar o livro. Existem empréstimos associados.");
+            redirecionarComMensagem(request, response, "livro?acao=listar",
+                    "Não é possível deletar o livro. Existem empréstimos associados.");
             return;
         }
 
@@ -106,6 +124,9 @@ public class LivroServlet extends BaseServlet {
             redirecionarComMensagem(request, response, "livro?acao=listar", "Livro não encontrado.");
             return;
         }
+
+        int emprestados = emprestimoDAO.contarEmprestimosAtivosPorLivro(id);
+        livro.setQuantidadeEmprestada(emprestados);
 
         request.setAttribute("livro", livro);
         encaminhar(request, response, "livros/livro-form.jsp");
@@ -125,13 +146,18 @@ public class LivroServlet extends BaseServlet {
         return livro;
     }
 
-    
     private void buscarLivro(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String filtro = request.getParameter("filtro");
 
         try {
             List<Livro> lista = livroDAO.buscarPorTituloAutorCategoria(filtro);
+
+            for (Livro livro : lista) {
+                int emprestados = emprestimoDAO.contarEmprestimosAtivosPorLivro(livro.getId());
+                livro.setQuantidadeEmprestada(emprestados);
+            }
+
             request.setAttribute("listaLivros", lista);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -140,5 +166,4 @@ public class LivroServlet extends BaseServlet {
 
         request.getRequestDispatcher("livros/livro-listar.jsp").forward(request, response);
     }
-
 }

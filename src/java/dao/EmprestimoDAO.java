@@ -165,7 +165,6 @@ public class EmprestimoDAO {
 
         List<Emprestimo> lista = new ArrayList<>();
 
-        // 1) Monta o SQL base
         StringBuilder sql = new StringBuilder("""
             SELECT e.id,
                    e.data_emprestimo,
@@ -182,7 +181,6 @@ public class EmprestimoDAO {
             WHERE 1=1
         """);
 
-        // 2) Lista de parâmetros para o PreparedStatement
         List<Object> params = new ArrayList<>();
 
         if (idUsuario != null) {
@@ -208,11 +206,9 @@ public class EmprestimoDAO {
 
         sql.append(" ORDER BY e.data_emprestimo DESC");
 
-        // 3) Executa a query
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
 
-            // Preenche os parâmetros na ordem correta
             for (int i = 0; i < params.size(); i++) {
                 stmt.setObject(i + 1, params.get(i));
             }
@@ -243,6 +239,16 @@ public class EmprestimoDAO {
 
         return lista;
     }
-
-
+       public int contarEmprestimosAtivosPorLivro(int idLivro) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT COUNT(*) FROM emprestimos WHERE id_livro = ? AND data_devolucao_real IS NULL";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idLivro);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
 }

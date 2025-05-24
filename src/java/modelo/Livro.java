@@ -10,6 +10,7 @@ public class Livro {
     private int quantidadeDisponivel;
     private String categoria;
     private String descricao;
+    private int quantidadeEmprestada;
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -37,4 +38,7 @@ public class Livro {
 
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
+    
+    public int getQuantidadeEmprestada() { return quantidadeEmprestada; }
+    public void setQuantidadeEmprestada(int quantidadeEmprestada) { this.quantidadeEmprestada = quantidadeEmprestada; }
 }
