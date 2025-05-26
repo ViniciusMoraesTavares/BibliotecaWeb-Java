@@ -41,4 +41,6 @@ public class Livro {
     
     public int getQuantidadeEmprestada() { return quantidadeEmprestada; }
     public void setQuantidadeEmprestada(int quantidadeEmprestada) { this.quantidadeEmprestada = quantidadeEmprestada; }
+    
+    public int getQuantidade() { return quantidadeDisponivel + quantidadeEmprestada; }
 }

@@ -33,6 +33,7 @@
         int quantidadeDisponivel = 1;
         String categoria = "";
         String descricao = "";
+        int quantidadeEmprestada = 0; // <-- Adicionado
 
         if (isEdicao) {
             try {
@@ -61,6 +62,10 @@
                 m = livro.getClass().getMethod("getQuantidadeDisponivel");
                 Object qtd = m.invoke(livro);
                 if (qtd != null) quantidadeDisponivel = Integer.parseInt(qtd.toString());
+
+                m = livro.getClass().getMethod("getQuantidadeEmprestada"); // <-- Aqui
+                Object qtdEmp = m.invoke(livro);
+                if (qtdEmp != null) quantidadeEmprestada = Integer.parseInt(qtdEmp.toString());
 
                 m = livro.getClass().getMethod("getCategoria");
                 Object c = m.invoke(livro); if (c != null) categoria = c.toString();
@@ -93,8 +98,18 @@
         <label for="isbn">ISBN:</label>
         <input id="isbn" type="text" name="isbn" maxlength="20" value="<%= isbn %>" required />
 
-        <label for="quantidade_disponivel">Quantidade Disponível:</label>
-        <input id="quantidade_disponivel" type="number" name="quantidadeDisponivel" min="1" value="<%= quantidadeDisponivel %>" required />
+        <label for="quantidade_disponivel">Quantidade Total:</label>
+        <input id="quantidade_disponivel" type="number" 
+               name="quantidadeDisponivel" 
+               min="<%= quantidadeEmprestada %>" 
+               value="<%= quantidadeDisponivel %>" 
+               required />
+        <% if (quantidadeEmprestada > 0) { %>
+            <div class="info-emprestados">
+                ⚠ Este livro possui <strong><%= quantidadeEmprestada %></strong> emprestado(s). 
+                A quantidade total não pode ser menor que isso.
+            </div>
+        <% } %>
 
         <label for="categoria">Categoria:</label>
         <input id="categoria" type="text" name="categoria" value="<%= categoria %>" required />

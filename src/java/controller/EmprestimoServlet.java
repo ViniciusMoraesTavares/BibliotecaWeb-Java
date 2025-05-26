@@ -106,6 +106,26 @@ public class EmprestimoServlet extends BaseServlet {
             return;
         }
 
+        LivroDAO livroDAO = new LivroDAO();
+        EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+
+        Livro livro = livroDAO.buscarPorId(emprestimo.getIdLivro());
+
+        if (livro == null) {
+            redirecionarComMensagem(request, response,
+                "emprestimo?acao=novo", "Livro não encontrado.");
+            return;
+        }
+
+        int quantidadeDisponivel = livro.getQuantidade() 
+                - emprestimoDAO.contarEmprestimosAtivosPorLivro(livro.getId());
+
+        if (quantidadeDisponivel <= 0) {
+            redirecionarComMensagem(request, response,
+                "emprestimo?acao=novo", "Não há unidades disponíveis para empréstimo deste livro.");
+            return;
+        }
+
         emprestimoDAO.inserir(emprestimo);
         redirecionarComMensagem(request, response,
             "emprestimo?acao=listar", "Empréstimo registrado com sucesso!");
@@ -303,5 +323,5 @@ public class EmprestimoServlet extends BaseServlet {
         request.setAttribute("filtroDataFim", dataFimStr);
 
         encaminhar(request, response, "emprestimos/emprestimos-usuario.jsp");
-    }  
+    } 
 }

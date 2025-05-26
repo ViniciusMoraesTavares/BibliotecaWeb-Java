@@ -64,7 +64,9 @@
             livroIdSelecionado = (Integer) cls.getMethod("getIdLivro").invoke(emprestimo);
             dataEmprestimo = (java.util.Date) cls.getMethod("getDataEmprestimo").invoke(emprestimo);
             dataDevolucaoPrevista = (java.util.Date) cls.getMethod("getDataDevolucaoPrevista").invoke(emprestimo);
-            status = (String) cls.getMethod("getStatus").invoke(emprestimo);
+            Object statusEnum = cls.getMethod("getStatus").invoke(emprestimo);
+            status = (statusEnum != null) ? statusEnum.toString() : "";
+
         }
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

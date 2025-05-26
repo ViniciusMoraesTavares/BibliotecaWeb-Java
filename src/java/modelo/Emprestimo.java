@@ -86,8 +86,7 @@ public class Emprestimo {
     public String getDataDevolucaoRealFormatada() {
         return dataDevolucaoReal != null ? new java.text.SimpleDateFormat("dd/MM/yyyy").format(dataDevolucaoReal) : null;
     }
-
-
+    
     @Override
     public String toString() {
         return "Emprestimo{" +
