@@ -48,6 +48,7 @@ public class EmprestimoServlet extends BaseServlet {
                 case "editar" -> mostrarFormularioEdicao(request, response);
                 case "novo" -> mostrarFormularioNovo(request, response);
                 case "confirmarDevolucao" -> mostrarConfirmacaoDevolucao(request, response);
+                case "devolver" -> devolverEmprestimo(request, response);
                 case "deletar" -> deletarEmprestimo(request, response);
                 case "relatorio" -> gerarRelatorio(request, response);
                 default -> redirecionarComMensagem(request, response, "index.jsp", "Ação inválida.");
@@ -76,6 +77,9 @@ public class EmprestimoServlet extends BaseServlet {
 
     private void listarEmprestimos(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        
+        emprestimoDAO.atualizarStatusAtrasados();
+        
         List<Emprestimo> lista = emprestimoDAO.listarTodos();
         request.setAttribute("listaEmprestimos", lista);
 
@@ -196,6 +200,22 @@ public class EmprestimoServlet extends BaseServlet {
         redirecionarComMensagem(request, response,
             "emprestimo?acao=listar", "Status da devolução atualizado com sucesso!");
     }
+    
+    private void devolverEmprestimo(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        int id = parseInt(request.getParameter("id"));
+        Emprestimo emprestimo = emprestimoDAO.buscarPorId(id);
+        if (emprestimo == null) {
+            redirecionarComMensagem(request, response, "emprestimo?acao=listar", "Empréstimo não encontrado.");
+            return;
+        }
+
+        emprestimo.setStatus(StatusEmprestimo.DEVOLVIDO);
+        emprestimo.setDataDevolucaoReal(new Date());
+        emprestimoDAO.atualizar(emprestimo);
+
+        redirecionarComMensagem(request, response, "emprestimo?acao=listar", "Empréstimo devolvido com sucesso!");
+    }
 
     private void mostrarFormularioEdicao(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
@@ -267,6 +287,8 @@ public class EmprestimoServlet extends BaseServlet {
     private void listarFiltrado(HttpServletRequest request, HttpServletResponse response)
         throws Exception { 
         
+        emprestimoDAO.atualizarStatusAtrasados();
+
         System.out.println("id_usuario = " + request.getParameter("id_usuario"));
         System.out.println("Todos os parâmetros:");
         request.getParameterMap().forEach((key, value) -> 

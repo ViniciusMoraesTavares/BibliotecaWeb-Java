@@ -251,4 +251,20 @@ public class EmprestimoDAO {
         }
         return 0;
     }
+       
+       public void atualizarStatusAtrasados() throws SQLException, ClassNotFoundException {
+    String sql = """
+        UPDATE emprestimos
+        SET status = 'ATRASADO'
+        WHERE status = 'ATIVO'
+          AND data_devolucao_prevista < CURRENT_DATE
+          AND data_devolucao_real IS NULL
+    """;
+
+    try (Connection conn = ConnectionFactory.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.executeUpdate();
+    }
+}
+
 }
